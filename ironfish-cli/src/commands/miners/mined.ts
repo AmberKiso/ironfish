@@ -51,7 +51,11 @@ export class MinedCommand extends IronfishCommand {
       stop: args.stop as number | null,
     })
 
-    const { start, stop } = await AsyncUtils.first(stream.contentStream())
+    const { start: rawStart, stop: rawStop } = await AsyncUtils.first(stream.contentStream())
+
+    const stop = MathUtils.floor(rawStop, 0)
+    const start = MathUtils.floor(rawStart, 0)
+
     this.log(`Scanning for mined blocks from ${start} -> ${stop}`)
 
     const speed = new Meter()
